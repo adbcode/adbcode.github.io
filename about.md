@@ -4,12 +4,6 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+Hi! I am an AI Engineer in the making.
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
-
-### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+I would like to use this space to talk more about my projects hosted at my [GitHub page](https://github.com/adbcode/).

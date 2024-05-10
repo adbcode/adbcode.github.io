@@ -9,7 +9,7 @@ name: adbcode
 description: AI Engineer
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
-avatar: https://avatars.githubusercontent.com/u/9251629?v=4
+avatar: images/logo.png #https://avatars.githubusercontent.com/u/9251629
 
 #
 # Flags below are optional

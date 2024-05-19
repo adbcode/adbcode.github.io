@@ -32,6 +32,6 @@ search <your-tailnet-name>
 ```
 
 To find the search domain, open the [DNS page](https://login.tailscale.com/admin/dns) and find the value under `Tailnet name`:
-![image](https://github.com/adbcode/adbcode.github.io/assets/9251629/e337eddb-2281-4f4b-8e0b-235abf15c81e)
+![image](/images/331882888-e337eddb-2281-4f4b-8e0b-235abf15c81e.png)
 
 You can also confirm the MagicDNS server address in the same page (default being `100.100.100.100`). With these changes, you should now be able to use MagicDNS as usual.

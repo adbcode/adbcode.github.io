@@ -5,6 +5,8 @@ title: Hugging Face Audio Course
 
 (Originally posted on 25/08/2023.)
 
+![banner।](/images/audio-course.png)
+
 मैने कुछ दिनों पहले [Hugging Face](https://huggingface.co/) का [Audio Course](https://huggingface.co/learn/audio-course) पूरा किया।
 
 आज कल "AI" का काफी चलन हैं और बहुत hype हैं। अभी सबसे ज्यादा रुचि "generative AI" में हैं, जिस में टैक्स्ट, चित्र और होने को विडिओ तक मुमकिन हैं।

@@ -1,0 +1,39 @@
+baseURL = 'https://adbcode.github.io/'
+locale = 'en'
+title = 'adbcode'
+timeZone = 'UTC'
+disableKinds = ['taxonomy', 'term', 'section']
+
+[params]
+description = 'AI Engineer'
+avatar = '/images/logo.png'
+github = 'adbcode'
+
+# Keep the dates and short URLs of the original YYYY-MM-DD-slug.md posts.
+# Filename must come first: Hugo infers the slug only when it supplies the date.
+[frontmatter]
+date = [':filename', ':default']
+publishDate = [':filename', ':default']
+
+[permalinks.page]
+posts = '/:slug/'
+
+[outputs]
+home = ['HTML', 'Atom']
+page = ['HTML']
+
+[mediaTypes.'application/atom+xml']
+suffixes = ['xml']
+
+# Keep existing feed subscriptions at /feed.xml, including the Atom format.
+[outputFormats.Atom]
+mediaType = 'application/atom+xml'
+baseName = 'feed'
+isPlainText = false
+rel = 'alternate'
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.highlight]
+noClasses = false

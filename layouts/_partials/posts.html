@@ -1,0 +1,2 @@
+{{- /* Date-prefixed filenames retain Jekyll's ordering, including same-day posts. */ -}}
+{{- return (sort (where site.RegularPages "Section" "posts") "File.ContentBaseName" "desc") -}}

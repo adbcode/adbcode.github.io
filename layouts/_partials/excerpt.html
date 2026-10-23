@@ -1,0 +1,6 @@
+{{- /* Match Jekyll's first-paragraph excerpts without editing existing posts. */ -}}
+{{- $excerpt := .Summary -}}
+{{- with findRE `(?s)<p>.*?</p>` .Content 1 -}}
+  {{- $excerpt = index . 0 -}}
+{{- end -}}
+{{- return ($excerpt | safeHTML) -}}

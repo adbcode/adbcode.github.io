@@ -1,120 +1,89 @@
-> March, 2016: If you're on an old version of Jekyll Now and run into a) build warnings or b) syntax highlighting issues caused by [Jekyll 3 and GitHub Pages updates](https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0), just :sparkles:[update your _config.yml](https://github.com/barryclark/jekyll-now/pull/445/files):sparkles: and you'll be set!
+# adbcode
 
-# Jekyll Now
+Personal blog at <https://adbcode.github.io/>, built with Hugo and deployed to
+GitHub Pages by GitHub Actions. The layout and styles are adapted from
+[Jekyll Now](https://github.com/barryclark/jekyll-now); its MIT license is retained
+in `LICENSE`.
 
-**Jekyll** is a static site generator that's perfect for GitHub hosted blogs ([Jekyll Repository](https://github.com/jekyll/jekyll))
+## Local development
 
-**Jekyll Now** makes it easier to create your Jekyll blog, by eliminating a lot of the up front setup.
+Install [Hugo 0.168.0](https://github.com/gohugoio/hugo/releases/tag/v0.168.0) and
+[Dart Sass 1.106.1](https://github.com/sass/dart-sass/releases/tag/1.106.1), matching
+the pinned CI versions. Put both executables on your `PATH`. For a Dart Sass
+release archive, add the extracted `dart-sass` directory and retain its `src`
+directory. Hugo's standard edition is sufficient; Ruby, Node, Go, theme
+submodules, and Hugo Extended are not required.
 
-- You don't need to touch the command line
-- You don't need to install/configure ruby, rvm/rbenv, ruby gems :relaxed:
-- You don't need to install runtime dependencies like markdown processors, Pygments, etc
-- If you're on Windows, this will make setting up Jekyll a lot easier
-- It's easy to try out, you can just delete your forked repository if you don't like it
+```sh
+hugo version
+sass --version
+hugo server --buildDrafts
+```
 
-In a few minutes you'll be set up with a minimal, responsive blog like the one below giving you more time to spend on writing epic blog posts!
+Open <http://localhost:1313/>. To reproduce the production build:
 
-![Jekyll Now Theme Screenshot](/images/jekyll-now-theme-screenshot.jpg "Jekyll Now Theme Screenshot")
+```sh
+hugo build --gc --minify --panicOnWarning
+```
 
-## Quick Start
+Generated files go to `public/` and are ignored by Git.
 
-### Step 1) Fork Jekyll Now to your User Repository
+## Writing posts
 
-Fork this repo, then rename the repository to yourgithubusername.github.io.
+Keep the `YYYY-MM-DD-slug.md` naming convention in `content/posts/`:
 
-Your Jekyll blog will often be viewable immediately at <https://yourgithubusername.github.io> (if it's not, you can often force it to build by completing step 2)
+```sh
+hugo new content posts/2026-10-24-my-post.md
+```
 
-![Step 1](/images/step1.gif "Step 1")
+The archetype creates a draft with `layout: post`. Edit the title and Markdown,
+then remove `draft: true` (or set it to `false`) when ready to publish. Hugo reads
+the publication date and slug from the filename, so this example is published
+at `/my-post/`. Do not rename existing posts unless you also intend to change
+their date or URL. Future-dated posts appear only after their date and a new
+build; `hugo server --buildDrafts --buildFuture` previews them locally.
 
-### Step 2) Customize and view your site
+Put images in `static/images/` and reference them as `/images/filename.png`.
+Edit `content/about.md` for the About page, `hugo.toml` for site metadata,
+`layouts/` for templates, and `assets/scss/` for styles.
 
-Enter your site name, description, avatar and many other options by editing the _config.yml file. You can easily turn on Google Analytics tracking, Disqus commenting and social icons here too.
+## GitHub Pages setup
 
-Making a change to _config.yml (or any file in your repository) will force GitHub Pages to rebuild your site with jekyll. Your rebuilt site will be viewable a few seconds later at <https://yourgithubusername.github.io> - if not, give it ten minutes as GitHub suggests and it'll appear soon
+1. In [repository Settings → Pages](https://github.com/adbcode/adbcode.github.io/settings/pages),
+   set **Build and deployment → Source** to **GitHub Actions**.
+2. Commit and push the migration to `master`. The **Hugo GitHub Pages** workflow
+   builds and deploys the site. You do not need to create a workflow using the
+   GitHub UI; `.github/workflows/hugo.yml` is already included.
+3. Check the run in [Actions](https://github.com/adbcode/adbcode.github.io/actions).
+   After changing the Pages source, a failed earlier run can be rerun, or choose
+   **Hugo GitHub Pages → Run workflow** on `master`.
 
-> There are 3 different ways that you can make changes to your blog's files:
+If Actions is disabled for this repository, enable it. If the `github-pages`
+environment has branch restrictions or required reviewers, allow `master` or
+approve the deployment as appropriate. No personal access token or extra
+repository secrets are needed; the workflow uses GitHub's automatic token.
+The [GitHub documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+describes this deployment method.
 
-> 1. Edit files within your new username.github.io repository in the browser at GitHub.com (shown below).
-> 2. Use a third party GitHub content editor, like [Prose by Development Seed](http://prose.io). It's optimized for use with Jekyll making markdown editing, writing drafts, and uploading images really easy.
-> 3. Clone down your repository and make updates locally, then push them to your GitHub repository.
+Pull requests targeting `master` build for validation without deploying.
+Pushes to `master` and manual runs on `master` deploy the generated Pages
+artifact. Tool versions, download checksums, and action commits are pinned in
+the workflow; update them together when upgrading. Generated HTML is not
+committed to a separate branch.
 
-![_config.yml](/images/config.png "_config.yml")
+The repository's old `CNAME` file was blank. For a future custom domain, set it
+in **Settings → Pages** and update `baseURL` in `hugo.toml`; production builds
+also read the configured Pages URL through `actions/configure-pages`.
 
-### Step 3) Publish your first blog post
+## Migration compatibility
 
-Edit `/_posts/2014-3-3-Hello-World.md` to publish your first blog post. This [Markdown Cheatsheet](http://www.jekyllnow.com/Markdown-Style-Guide/) might come in handy.
+All four original post files were moved from `_posts/` to `content/posts/`
+without editing their contents or front matter. All original images were moved
+unchanged to `static/images/`. Existing post URLs remain `/hello-world/`,
+`/tailscale-wsl/`, `/audio-course/`, and `/type-hindi/`.
 
-![First Post](/images/first-post.png "First Post")
-
-> You can add additional posts in the browser on GitHub.com too! Just hit the + icon in `/_posts/` to create new content. Just make sure to include the [front-matter](http://jekyllrb.com/docs/frontmatter/) block at the top of each new blog post and make sure the post's filename is in this format: year-month-day-title.md
-
-## Local Development
-
-1. Install Jekyll and plug-ins in one fell swoop. `gem install github-pages` This mirrors the plug-ins used by GitHub Pages on your local machine including Jekyll, Sass, etc.
-2. Clone down your fork `git clone https://github.com/yourusername/yourusername.github.io.git`
-3. Serve the site and watch for markup/sass changes `jekyll serve`
-4. View your website at http://127.0.0.1:4000/
-5. Commit any changes and push everything to the master branch of your GitHub user repository. GitHub Pages will then rebuild and serve your website.
-
-## Moar!
-
-I've created a more detailed walkthrough, [**Build A Blog With Jekyll And GitHub Pages**](http://www.smashingmagazine.com/2014/08/01/build-blog-jekyll-github-pages/) over at the Smashing Magazine website. Check it out if you'd like a more detailed walkthrough and some background on Jekyll. :metal:
-
-It covers:
-
-- A more detailed walkthrough of setting up your Jekyll blog
-- Common issues that you might encounter while using Jekyll
-- Importing from Wordpress, using your own domain name, and blogging in your favorite editor
-- Theming in Jekyll, with Liquid templating examples
-- A quick look at Jekyll 2.0’s new features, including Sass/Coffeescript support and Collections
-
-## Jekyll Now Features
-
-✓ Command-line free _fork-first workflow_, using GitHub.com to create, customize and post to your blog  
-✓ Fully responsive and mobile optimized base theme (**[Theme Demo](http://jekyllnow.com)**)  
-✓ Sass/Coffeescript support using Jekyll 2.0  
-✓ Free hosting on your GitHub Pages user site  
-✓ Markdown blogging  
-✓ Syntax highlighting  
-✓ Disqus commenting  
-✓ Google Analytics integration  
-✓ SVG social icons for your footer  
-✓ 3 http requests, including your avatar  
-
-✘ No installing dependencies
-✘ No need to set up local development  
-✘ No configuring plugins  
-✘ No need to spend time on theming  
-✘ More time to code other things ... wait ✓!  
-
-## Questions?
-
-[Open an Issue](https://github.com/barryclark/jekyll-now/issues/new) and let's chat!
-
-## Other forkable themes
-
-You can use the [Quick Start](https://github.com/barryclark/jekyll-now#quick-start) workflow with other themes that are set up to be forked too! Here are some of my favorites:
-
-- [Hyde](https://github.com/poole/hyde) by MDO
-- [Lanyon](https://github.com/poole/lanyon) by MDO
-- [mojombo.github.io](https://github.com/mojombo/mojombo.github.io) by Tom Preston-Werner
-- [Left](https://github.com/holman/left) by Zach Holman
-- [Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes) by Michael Rose
-- [Skinny Bones](https://github.com/mmistakes/skinny-bones-jekyll) by Michael Rose
-
-## Credits
-
-- [Jekyll](https://github.com/jekyll/jekyll) - Thanks to its creators, contributors and maintainers.
-- [SVG icons](https://github.com/neilorangepeel/Free-Social-Icons) - Thanks, Neil Orange Peel. They're beautiful.
-- [Solarized Light Pygments](https://gist.github.com/edwardhotchkiss/2005058) - Thanks, Edward.
-- [Joel Glovier](http://joelglovier.com/writing/) - Great Jekyll articles. I used Joel's feed.xml in this repository.
-- [David Furnes](https://github.com/dfurnes), [Jon Uy](https://github.com/jonuy), [Luke Patton](https://github.com/lkpttn) - Thanks for the design/code reviews.
-- [Bart Kiers](https://github.com/bkiers), [Florian Simon](https://github.com/vermluh), [Henry Stanley](https://github.com/henryaj), [Hun Jae Lee](https://github.com/hunjaelee), [Javier Cejudo](https://github.com/javiercejudo), [Peter Etelej](https://github.com/etelej), [Ben Abbott](https://github.com/jaminscript), [Ray Nicholus](https://github.com/rnicholus), [Erin Grand](https://github.com/eringrand), [Léo Colombaro](https://github.com/LeoColomb), [Dean Attali](https://github.com/daattali), [Clayton Errington](https://github.com/cjerrington), [Colton Fitzgerald](https://github.com/coltonfitzgerald), [Trace Mayer](https://github.com/sunnankar) - Thanks for your [fantastic contributions](https://github.com/barryclark/jekyll-now/commits/master) to the project!
-
-## Contributing
-
-Issues and Pull Requests are greatly appreciated. If you've never contributed to an open source project before I'm more than happy to walk you through how to create a pull request.
-
-You can start by [opening an issue](https://github.com/barryclark/jekyll-now/issues/new) describing the problem that you're looking to resolve and we'll go from there.
-
-I want to keep Jekyll Now as minimal as possible. Every line of code should be one that's useful to 90% of the people using it. Please bear that in mind when submitting feature requests. If it's not something that most people will use, it probably won't get merged. :guardsman:
+The original design, first-paragraph excerpts, same-day post ordering,
+`/about/`, `/404.html`, `/style.css`, and `/sitemap.xml` are retained. The Atom
+feed remains at `/feed.xml` and keeps Jekyll's dated entry IDs for existing
+subscribers. The Jekyll build configuration and Liquid layouts have been
+replaced with Hugo templates.

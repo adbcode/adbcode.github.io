@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ if not .IsHome }}{{ .Title }} – {{ end }}{{ site.Title }} – {{ site.Params.description }}</title>
+    {{ $description := site.Params.description }}
+    {{ if .IsPage }}
+      {{ $description = .Description | default (partial "excerpt.html" . | plainify) }}
+    {{ end }}
+    <meta name="description" content="{{ $description }}">
+    <meta name="author" content="{{ site.Title }}">
+    <meta property="og:title" content="{{ .Title }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:url" content="{{ .Permalink }}">
+    <link rel="canonical" href="{{ .Permalink }}">
+    {{ $style := resources.Get "scss/style.scss" | css.Sass (dict "transpiler" "dartsass" "targetPath" "style.css" "outputStyle" "compressed") }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    {{ with site.Home.OutputFormats.Get "Atom" }}
+      <link rel="alternate" type="{{ .MediaType.Type }}" title="{{ site.Title }} - {{ site.Params.description }}" href="{{ .RelPermalink }}">
+    {{ end }}
+  </head>
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="{{ site.Home.RelPermalink }}" class="site-avatar"><img src="{{ site.Params.avatar | relURL }}" alt="{{ site.Title }}"></a>
+          <div class="site-info">
+            <h1 class="site-name"><a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a></h1>
+            <p class="site-description">{{ site.Params.description }}</p>
+          </div>
+          <nav aria-label="Main navigation">
+            <a href="{{ site.Home.RelPermalink }}">Blog</a>
+            <a href="{{ "about/" | relURL }}">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+    <main id="main" class="container">
+      {{ block "main" . }}{{ end }}
+    </main>
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          {{ with site.Params.github }}<a href="https://github.com/{{ . }}" aria-label="GitHub"><i class="svg-icon github" aria-hidden="true"></i></a>{{ end }}
+          {{ with site.Home.OutputFormats.Get "Atom" }}<a href="{{ .RelPermalink }}" aria-label="Subscribe to the feed"><i class="svg-icon rss" aria-hidden="true"></i></a>{{ end }}
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>

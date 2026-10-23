@@ -1,0 +1,11 @@
+{{ define "main" }}
+  <div class="posts">
+    {{ range partial "posts.html" . }}
+      <article class="post">
+        <h1><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+        <div class="entry">{{ partial "excerpt.html" . }}</div>
+        <a href="{{ .RelPermalink }}" class="read-more">Read More</a>
+      </article>
+    {{ end }}
+  </div>
+{{ end }}

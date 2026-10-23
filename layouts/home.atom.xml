@@ -1,0 +1,27 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\"?>" | safeHTML }}
+{{- $posts := partial "posts.html" . -}}
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.Language.Locale }}" xml:base="{{ site.Home.Permalink }}">
+  <title>{{ site.Title }}</title>
+  <subtitle>{{ site.Params.description }}</subtitle>
+  {{ with site.Home.OutputFormats.Get "Atom" }}<link href="{{ .Permalink }}" rel="self" type="application/atom+xml" />{{ end }}
+  <link href="{{ site.Home.Permalink }}" rel="alternate" type="text/html" />
+  <id>{{ site.Home.Permalink | strings.TrimSuffix "/" }}/feed.xml</id>
+  {{- with $posts }}
+  <updated>{{ (index . 0).Lastmod.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+  {{- else }}
+  <updated>{{ now.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+  {{- end }}
+  <author><name>{{ site.Title }}</name></author>
+  {{- range $posts }}
+  <entry>
+    <title>{{ .Title }}</title>
+    <link href="{{ .Permalink }}" rel="alternate" type="text/html" />
+    {{- /* Jekyll's post.id used dated paths, even with /:title/ permalinks. */}}
+    <id>{{ printf "%s/%s/%s" (site.Home.Permalink | strings.TrimSuffix "/") (.Date.Format "2006/01/02") .Slug }}</id>
+    <published>{{ .PublishDate.Format "2006-01-02T15:04:05Z07:00" }}</published>
+    <updated>{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+    <summary type="html">{{ partial "excerpt.html" . | htmlEscape | safeHTML }}</summary>
+    <content type="html" xml:base="{{ .Permalink }}">{{ .Content | htmlEscape | safeHTML }}</content>
+  </entry>
+  {{- end }}
+</feed>

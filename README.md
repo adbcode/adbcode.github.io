@@ -100,8 +100,9 @@ also read the configured Pages URL through `actions/configure-pages`.
 ## Migration compatibility
 
 All four original post files were moved from `_posts/` to `content/posts/`
-without editing their contents or front matter. All original images were moved
-unchanged to `static/images/`. Existing post URLs remain `/hello-world/`,
+without editing their contents or front matter. Images referenced by the posts
+are retained unchanged in `static/images/`; unused Jekyll starter-guide graphics
+have been removed. Existing post URLs remain `/hello-world/`,
 `/tailscale-wsl/`, `/audio-course/`, and `/type-hindi/`.
 
 The original design, first-paragraph excerpts, same-day post ordering,

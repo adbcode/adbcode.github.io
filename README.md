@@ -30,7 +30,25 @@ Generated files go to `public/` and are ignored by Git.
 
 ## Writing posts
 
-Keep the `YYYY-MM-DD-slug.md` naming convention in `content/posts/`:
+You can keep writing directly in Markdown, locally or in GitHub's editor.
+Create `content/posts/YYYY-MM-DD-slug.md` with the same front matter as before:
+
+```markdown
+---
+layout: post
+title: My new post
+---
+
+Write the post here.
+```
+
+Commit and push to `master`; the workflow builds and deploys the update. Editing
+an existing file works the same way. The homepage shows only the first
+paragraph of each post; open the post to see edits further down. The About
+page is `content/about.md`; the short header description is separately set in
+`hugo.toml` under `[params]`.
+
+Alternatively, create a post with the optional Hugo CLI:
 
 ```sh
 hugo new content posts/2026-10-24-my-post.md
@@ -39,9 +57,13 @@ hugo new content posts/2026-10-24-my-post.md
 The archetype creates a draft with `layout: post`. Edit the title and Markdown,
 then remove `draft: true` (or set it to `false`) when ready to publish. Hugo reads
 the publication date and slug from the filename, so this example is published
-at `/my-post/`. Do not rename existing posts unless you also intend to change
-their date or URL. Future-dated posts appear only after their date and a new
-build; `hugo server --buildDrafts --buildFuture` previews them locally.
+at `/my-post/`. Dates are interpreted at midnight in **Europe/Paris**, both
+locally and in GitHub Actions. Do not rename existing posts unless you also
+intend to change their date or URL. Posts marked `draft: true` and future-dated
+posts are excluded from production even when the build succeeds. A future post
+needs another push or a manual workflow run after its publication date; there
+is no scheduled rebuild. `hugo server --buildDrafts --buildFuture` previews
+unpublished posts locally.
 
 Put images in `static/images/` and reference them as `/images/filename.png`.
 Edit `content/about.md` for the About page, `hugo.toml` for site metadata,

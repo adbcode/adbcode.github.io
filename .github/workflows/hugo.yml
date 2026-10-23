@@ -67,6 +67,10 @@ jobs:
         run: |
           hugo version
           sass --version
+          echo "Draft posts (excluded from this deployment):"
+          hugo list drafts
+          echo "Future posts (excluded until their publication date and a new build):"
+          hugo list future
           args=(--gc --minify --panicOnWarning)
           if [[ -n "$BASE_URL" ]]; then
             args+=(--baseURL "${BASE_URL%/}/")

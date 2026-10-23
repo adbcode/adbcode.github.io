@@ -1,7 +1,8 @@
 baseURL = 'https://adbcode.github.io/'
 locale = 'en'
 title = 'adbcode'
-timeZone = 'UTC'
+# Interpret date-only filenames in the author's local timezone, including CI.
+timeZone = 'Europe/Paris'
 disableKinds = ['taxonomy', 'term', 'section']
 
 [params]
